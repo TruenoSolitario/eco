@@ -1,3 +1,4 @@
+import SidebarWrapper from '@/components/shared/siderbar/SidebarWrapper';
 import React from 'react'
 
 type Props = React.PropsWithChildren<{
@@ -6,9 +7,9 @@ type Props = React.PropsWithChildren<{
 
 const Layout = ({ children }: Props) => {
     return (
-        <>
+        <SidebarWrapper>
             {children}
-        </>
+        </SidebarWrapper>
     )
 }
 
