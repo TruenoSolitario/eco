@@ -6,8 +6,9 @@ import { ThemeToggle } from '@/components/ui/theme/theme-toggle';
 import { useConversation } from '@/hooks/useConversation';
 import { useNavigation } from '@/hooks/useNavigation'
 import { UserButton } from '@clerk/clerk-react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@radix-ui/react-tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
 
 const MobileNav = () => {
     const paths = useNavigation();
@@ -30,6 +31,11 @@ const MobileNav = () => {
                                                 variant={path.active ? "default" : "outline"}
                                             >
                                                 {path.icon}
+                                                {
+													path.count ? (
+														<Badge className='absolute left-7 bottom-6'>{path.count}</Badge>
+													) : null
+												}
                                             </Button>
                                         </TooltipTrigger>
                                         <TooltipContent>
