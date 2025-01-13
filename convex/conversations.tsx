@@ -46,17 +46,32 @@ export const get = query({
 					.withIndex("by_conversationId", (q) => q.eq("conversationId", conversation?._id))
 					.collect()
 
-				const lastMessage = await getLastMessageDetails({ctx, id: conversation.lastMessageId})
+				const lastMessage = await getLastMessageDetails({ ctx, id: conversation.lastMessageId })
+
+				const lastSeenMessage = conversationMemberships[index].lastSeenMessage
+					? await ctx.db.get(conversationMemberships[index].lastSeenMessage!)
+					: null
+
+				const lastSeenMessageTime = lastSeenMessage
+					? lastSeenMessage._creationTime
+					: -1
+
+				const unseenMessages = await ctx.db
+					.query("messages")
+					.withIndex("by_conversationId", q => q.eq("conversationId", conversation._id))
+					.filter(q => q.gt(q.field("_creationTime"), lastSeenMessageTime))
+					.filter(q => q.neq(q.field("senderId"), currentUser._id))
+					.collect()
 
 				if (conversation.isGroup) {
-					return { conversation, lastMessage }
+					return { conversation, lastMessage, unseenCount: unseenMessages.length }
 				} else {
 					const otherMembership = allConversationMemberships
 						.filter((membership) => membership.memberId !== currentUser._id)[0]
 
 					const otherMember = await ctx.db.get(otherMembership.memberId)
 
-					return { conversation, otherMember, lastMessage }
+					return { conversation, otherMember, lastMessage, unseenCount: unseenMessages.length }
 				}
 			})
 		)
@@ -66,7 +81,7 @@ export const get = query({
 	}
 })
 
-const getLastMessageDetails = async({ ctx, id } : { ctx: QueryCtx | MutationCtx; id: Id<"messages"> | undefined }) => {
+const getLastMessageDetails = async ({ ctx, id }: { ctx: QueryCtx | MutationCtx; id: Id<"messages"> | undefined }) => {
 	if (!id) return null
 
 	const message = await ctx.db.get(id)
@@ -84,7 +99,7 @@ const getLastMessageDetails = async({ ctx, id } : { ctx: QueryCtx | MutationCtx;
 }
 
 const getMessageContent = (type: string, content: string) => {
-	switch(type){
+	switch (type) {
 		case "text":
 			return content;
 		default:

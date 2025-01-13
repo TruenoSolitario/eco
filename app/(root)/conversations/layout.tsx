@@ -30,7 +30,8 @@ const ConversationsLayout = ({ children }: Props) => {
 									id={conversations.conversation._id}
 									name={conversations.conversation.name || ""}
 									lastMessageContent={conversations.lastMessage?.content}
-									lastMessageSender={conversations.lastMessage?.sender} />
+									lastMessageSender={conversations.lastMessage?.sender}
+									unseenCount={conversations.unseenCount} />
 								)
 								: (<DMConversationItem
 									key={conversations.conversation._id}
@@ -38,7 +39,8 @@ const ConversationsLayout = ({ children }: Props) => {
 									username={conversations.otherMember?.username || ""}
 									imageUrl={conversations.otherMember?.imageUrl || ""}
 									lastMessageContent={conversations.lastMessage?.content}
-									lastMessageSender={conversations.lastMessage?.sender} />
+									lastMessageSender={conversations.lastMessage?.sender}
+									unseenCount={conversations.unseenCount} />
 								);
 						})
 					)

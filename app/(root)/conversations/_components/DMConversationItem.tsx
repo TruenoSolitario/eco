@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { Id } from '@/convex/_generated/dataModel'
 import { User } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import React from 'react'
 
@@ -11,12 +12,13 @@ type Props = {
 	username: string;
 	lastMessageSender?: string;
 	lastMessageContent?: string;
+	unseenCount: number;
 }
 
-function DMConversationItem({ id, imageUrl, username, lastMessageContent, lastMessageSender }: Props) {
+function DMConversationItem({ id, imageUrl, username, lastMessageContent, lastMessageSender, unseenCount }: Props) {
 	return (
 		<Link href={`/conversations/${id}`} className='w-full'>
-			<Card className='p-2 flex flex-row items-center gap-4 truncate'>
+			<Card className='p-2 flex flex-row items-center justify-between'>
 				<div className='flex flex-row items-center gap-4 truncate'>
 					<Avatar>
 						<AvatarImage src={imageUrl} />
@@ -42,6 +44,7 @@ function DMConversationItem({ id, imageUrl, username, lastMessageContent, lastMe
 							)}
 					</div>
 				</div>
+				{unseenCount ? <Badge>{unseenCount}</Badge> : null}
 			</Card>
 		</Link>
 	)
