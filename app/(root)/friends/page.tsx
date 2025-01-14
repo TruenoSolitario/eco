@@ -12,6 +12,7 @@ import Request from './_components/Request'
 const FriendsPage = () => {
 	const requests = useQuery(api.requests.get)
 
+	
 	return (
 		<>
 			<ItemsList title='Amigos' action={<AddFriendDialog />}>
