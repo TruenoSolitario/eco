@@ -33,7 +33,7 @@ const Body = ({ members }: Props) => {
 				messageId: messages[0].message._id
 			})
 		}
-	}, [messages?.length, conversationId, markRead, pending])
+	}, [messages, conversationId, markRead, pending])
 
 	const formatSeenBy = (names: string[]) => {
 		switch (names.length) {

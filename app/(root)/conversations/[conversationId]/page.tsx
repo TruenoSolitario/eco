@@ -14,9 +14,7 @@ import RemoveFriendDialog from './_components/dialogs/RemoveFriendDialog'
 import DeleteGroupDialog from './_components/dialogs/DeleteGroupDialog'
 import LeaveGroupDialog from './_components/dialogs/LeaveGroupDialog'
 
-type Props = {}
-
-const ConversationPage = (props: Props) => {
+const ConversationPage = () => {
 
 	// Para un client component en nextjs 15 hay que hacer esto:
 	const paramsRecogidoNuevaForma = useParams<{ conversationId: Id<"conversations">; }>()
