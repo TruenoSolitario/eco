@@ -14,22 +14,17 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from 'convex/react'
 import { ConvexError } from 'convex/values'
 import { CirclePlus, X } from 'lucide-react'
-import React, { Dispatch, SetStateAction, useMemo } from 'react'
+import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-
-type Props = {
-	open: boolean;
-	setOpen: Dispatch<SetStateAction<boolean>>
-}
 
 const createGroupFormSchema = z.object({
 	name: z.string().min(1, { message: "This field can't be empty" }),
 	members: z.string().array().min(1, { message: "You must select at least 1 friend" })
 })
 
-const CreateGroupDialog = ({ open, setOpen }: Props) => {
+const CreateGroupDialog = () => {
 	const friends = useQuery(api.friends.get)
 
 	const { mutate: createGroup, pending } = useMutationState(api.conversation.createGroup)
@@ -45,50 +40,53 @@ const CreateGroupDialog = ({ open, setOpen }: Props) => {
 
 	const unselectedFriends = useMemo(() => {
 		return friends ? friends.filter(friend => !members.includes(friend._id)) : []
-	}, [members, friends])
+	}, [friends, members])
 
-	const handleSubmit = async (
-		values: z.infer<typeof createGroupFormSchema>
-	) => {
-		await createGroup({ name: values.name, members: values.members })
-			.then(() => {
+	const handleSubmit = useCallback(
+		async (values: z.infer<typeof createGroupFormSchema>) => {
+			try {
+				await createGroup({ name: values.name, members: values.members });
 				form.reset();
-				toast.success("Group created!")
-				setOpen(false)
-			})
-			.catch((error) => {
-				toast.error(
-					error instanceof ConvexError ? error.data : "Unexpected error occurred"
-				)
-			})
-	}
+				toast.success('Group created successfully!');
+			} catch (error) {
+				if (error instanceof ConvexError) {
+					toast.error(`Error creating group: ${error.data}`);
+				} else {
+					toast.error('An unexpected error occurred while creating the group');
+				}
+				console.error('Group creation error:', error);
+			}
+		},
+		[createGroup, form]
+	);
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
+		<Dialog>
 			<Tooltip>
-				<TooltipTrigger>
-					<Button size="icon" variant="outline" asChild>
-						<DialogTrigger asChild>
+				<TooltipTrigger asChild>
+					<DialogTrigger asChild>
+						<Button size="icon" variant="outline">
 							<CirclePlus />
-						</DialogTrigger>
-					</Button>
+						</Button>
+					</DialogTrigger>
 				</TooltipTrigger>
 				<TooltipContent>
-					<p>Create group</p>
+					<p>Crear grupo</p>
 				</TooltipContent>
 			</Tooltip>
+
 			<DialogContent className='block'>
 				<DialogHeader>
-					<DialogTitle>Create group</DialogTitle>
-					<DialogDescription>Add your friends to get started!</DialogDescription>
+					<DialogTitle>Crear grupo</DialogTitle>
+					<DialogDescription className='pb-4'>Añade amigos para comenzar!</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
 						<FormField control={form.control} name="name" render={({ field }) => {
 							return (
 								<FormItem>
-									<FormLabel>Name</FormLabel>
-									<FormControl><Input placeholder='Group name...' {...field} /></FormControl>
+									<FormLabel>Nombre del grupo</FormLabel>
+									<FormControl><Input placeholder='Nombre...' {...field} /></FormControl>
 									<FormMessage />
 								</FormItem>
 							)
@@ -96,11 +94,11 @@ const CreateGroupDialog = ({ open, setOpen }: Props) => {
 						<FormField control={form.control} name="members" render={() => {
 							return (
 								<FormItem>
-									<FormLabel>Friends</FormLabel>
+									<FormLabel>Amigos</FormLabel>
 									<FormControl>
 										<DropdownMenu>
 											<DropdownMenuTrigger asChild disabled={unselectedFriends.length === 0}>
-												<Button className='w-full' variant="outline">Select</Button>
+												<Button className='w-full' variant="outline">Seleccionar</Button>
 											</DropdownMenuTrigger>
 											<DropdownMenuContent className='w-full'>
 												{
@@ -154,7 +152,7 @@ const CreateGroupDialog = ({ open, setOpen }: Props) => {
 								: null
 						}
 						<DialogFooter>
-							<Button disabled={pending} type="submit">Create</Button>
+							<Button disabled={pending} type="submit">Crear</Button>
 						</DialogFooter>
 					</form>
 				</Form>

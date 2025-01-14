@@ -11,7 +11,7 @@ export const remove = mutation({
 		const identity = await ctx.auth.getUserIdentity()
 
 		if (!identity) {
-			throw new Error("Unauthorized")
+			throw new Error("Sin autorización")
 		}
 
 		const currentUser = await getUserByClerkId({
@@ -20,12 +20,12 @@ export const remove = mutation({
 		})
 
 		if (!currentUser) {
-			throw new ConvexError("User not found")
+			throw new ConvexError("No se encoontró el usuario")
 		}
 
 		const conversation = await ctx.db.get(args.conversationId)
 		if (!conversation) {
-			throw new ConvexError("Conversation not found")
+			throw new ConvexError("No se encontró la conversación")
 		}
 
 		const memberShips = await ctx.db
@@ -33,7 +33,7 @@ export const remove = mutation({
 			.withIndex("by_conversationId", q => q.eq("conversationId", args.conversationId))
 			.collect()
 		if (!memberShips || memberShips.length !== 2) {
-			throw new ConvexError("This conversation does not have any members")
+			throw new ConvexError("Esta conversación no tiene miembros")
 		}
 
 		const friendShip = await ctx.db
@@ -41,7 +41,7 @@ export const remove = mutation({
 			.withIndex("by_conversationId", q => { return q.eq("conversationId", args.conversationId) })
 			.unique()
 		if (!friendShip) {
-			throw new ConvexError("Friend could not be found")
+			throw new ConvexError("No se encontró el amigo")
 		}
 
 		const messages = await ctx.db

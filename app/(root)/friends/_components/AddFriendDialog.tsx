@@ -57,17 +57,17 @@ const AddFriendDialog = () => {
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent>
-					<p>Add friend</p>
+					<p>Añadir amigo</p>
 				</TooltipContent>
 			</Tooltip>
 
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>
-						Add friend
+					Añadir amigo
 					</DialogTitle>
 					<DialogDescription>
-						Send a request to connect with your friends!
+						Envía una petición para conectar con tus amigos!
 					</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
@@ -85,7 +85,7 @@ const AddFriendDialog = () => {
 							)}
 						/>
 						<DialogFooter>
-							<Button disabled={pending} type="submit">Send</Button>
+							<Button disabled={pending} type="submit">Enviar</Button>
 						</DialogFooter>
 					</form>
 				</Form>

@@ -34,12 +34,12 @@ const ConversationPage = () => {
 	return (
 		conversation === undefined ?
 			<div className='w-full h-full flex items-center justify-center'>
-				<Loader2 className='h-8 w-8' />
+				<Loader2 className='h-8 w-8 animate-spin' />
 			</div>
 			:
 			conversation === null ?
 				<p className='w-full h-full flex items-center justify-center'>
-					Conversation not found
+					No se encontró la conversación
 				</p>
 				:
 				<ConversationContainer>
@@ -61,12 +61,12 @@ const ConversationPage = () => {
 						options={conversation.isGroup
 							? [
 								{
-									label: "Leave group",
+									label: "Abandonar grupo",
 									destructive: false,
 									onClick: () => setLeaveGroupDialogOpen(true),
 								},
 								{
-									label: "Delete group",
+									label: "Eliminar grupo",
 									destructive: true,
 									onClick: () => setDeleteGroupDialogOpen(true),
 								},
