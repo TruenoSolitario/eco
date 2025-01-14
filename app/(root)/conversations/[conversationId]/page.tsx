@@ -5,7 +5,7 @@ import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { useQuery } from 'convex/react'
 import { Loader2 } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import ChatInput from './_components/input/ChatInput'
 import Header from './_components/Header'
 import Body from './_components/body/Body'
@@ -14,13 +14,9 @@ import RemoveFriendDialog from './_components/dialogs/RemoveFriendDialog'
 import DeleteGroupDialog from './_components/dialogs/DeleteGroupDialog'
 import LeaveGroupDialog from './_components/dialogs/LeaveGroupDialog'
 
-type Props = {
-	params: {
-		conversationId: Id<"conversations">
-	}
-}
+type Props = {}
 
-const ConversationPage = ({ params }: Props) => {
+const ConversationPage = (props: Props) => {
 
 	// Para un client component en nextjs 15 hay que hacer esto:
 	const paramsRecogidoNuevaForma = useParams<{ conversationId: Id<"conversations">; }>()
@@ -35,7 +31,7 @@ const ConversationPage = ({ params }: Props) => {
 	const [removeFriendDialogOpen, setRemoveFriendDialogOpen] = useState(false)
 	const [deleteGroupDialogOpen, setDeleteGroupDialogOpen] = useState(false)
 	const [leaveGroupDialogOpen, setLeaveGroupDialogOpen] = useState(false)
-	const [callType, setCallType] = useState<"audio" | "video" | null>(null)
+	//const [callType, setCallType] = useState<"audio" | "video" | null>(null)
 
 	return (
 		conversation === undefined ?

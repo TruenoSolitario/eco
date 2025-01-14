@@ -13,7 +13,7 @@ type Props = {
 	members: {
 		lastSeenMessageId?: Id<"messages">;
 		username?: string;
-		[key: string]: any;
+		[key: string]: unknown;	// unknown instead of any for deploy on Vercel
 	}[]
 }
 

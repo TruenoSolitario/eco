@@ -22,7 +22,7 @@ const chatMessageSchema = z.object({
 })
 
 const ChatInput = () => {
-	const textarearef = useRef<HTMLTextAreaElement | null>(null)
+	//const textarearef = useRef<HTMLTextAreaElement | null>(null)		// for deploy on Vercel
 
 	const { conversationId } = useConversation()
 
@@ -35,7 +35,7 @@ const ChatInput = () => {
 		}
 	})
 
-	const handleInputChange = (event: any) => {
+	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		const { value, selectionStart } = event.target
 
 		if (selectionStart !== null) {
@@ -78,9 +78,7 @@ const ChatInput = () => {
 											}} 
 											rows={1} maxRows={3} {...field} 
 											placeholder='Type a message...'
-											onChange={handleInputChange} 
-											onClick={handleInputChange} 
-											
+											onChange={handleInputChange} 						
 											className='min-h-full w-full resize-none border-0 outline-0 bg-card text-card-foreground placeholder:text-muted-foreground p-1.5' />
 									</FormControl>
 									<FormMessage></FormMessage>
