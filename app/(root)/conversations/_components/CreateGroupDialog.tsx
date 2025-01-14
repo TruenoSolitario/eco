@@ -74,21 +74,21 @@ const CreateGroupDialog = ({ open, setOpen }: Props) => {
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent>
-					<p>Create group</p>
+					<p>Crear grupo</p>
 				</TooltipContent>
 			</Tooltip>
 			<DialogContent className='block'>
 				<DialogHeader>
-					<DialogTitle>Create group</DialogTitle>
-					<DialogDescription>Add your friends to get started!</DialogDescription>
+					<DialogTitle>Crear grupo</DialogTitle>
+					<DialogDescription className='pb-4'>Añade amigos para comenzar!</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
 						<FormField control={form.control} name="name" render={({ field }) => {
 							return (
 								<FormItem>
-									<FormLabel>Name</FormLabel>
-									<FormControl><Input placeholder='Group name...' {...field} /></FormControl>
+									<FormLabel>Nombre del grupo</FormLabel>
+									<FormControl><Input placeholder='Nombre...' {...field} /></FormControl>
 									<FormMessage />
 								</FormItem>
 							)
@@ -96,11 +96,11 @@ const CreateGroupDialog = ({ open, setOpen }: Props) => {
 						<FormField control={form.control} name="members" render={() => {
 							return (
 								<FormItem>
-									<FormLabel>Friends</FormLabel>
+									<FormLabel>Amigos</FormLabel>
 									<FormControl>
 										<DropdownMenu>
 											<DropdownMenuTrigger asChild disabled={unselectedFriends.length === 0}>
-												<Button className='w-full' variant="outline">Select</Button>
+												<Button className='w-full' variant="outline">Seleccionar</Button>
 											</DropdownMenuTrigger>
 											<DropdownMenuContent className='w-full'>
 												{
@@ -154,7 +154,7 @@ const CreateGroupDialog = ({ open, setOpen }: Props) => {
 								: null
 						}
 						<DialogFooter>
-							<Button disabled={pending} type="submit">Create</Button>
+							<Button disabled={pending} type="submit">Crear</Button>
 						</DialogFooter>
 					</form>
 				</Form>

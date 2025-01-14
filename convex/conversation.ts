@@ -20,13 +20,13 @@ export const get = query({
 		})
 
 		if (!currentUser) {
-			throw new ConvexError("User not found")
+			throw new ConvexError("No se encontró el usuario")
 		}
 
 		const conversation = await ctx.db.get(args.id)
 
 		if (!conversation) {
-			throw new ConvexError("Conversation not found")
+			throw new ConvexError("No se encontró la conversación")
 		}
 
 		const membership = await ctx.db
@@ -36,7 +36,7 @@ export const get = query({
 			.unique()
 
 		if (!membership) {
-			throw new ConvexError("You aren't a member of this conversation")
+			throw new ConvexError("No eres miembro de esta conversación")
 		}
 
 		const allConversationMemberships = await ctx.db
@@ -64,7 +64,7 @@ export const get = query({
 					const member = await ctx.db.get(membership.memberId)
 
 					if (!member) {
-						throw new ConvexError("Member could not be found")
+						throw new ConvexError("No se encontró el miembro")
 					}
 
 					return {
@@ -120,7 +120,7 @@ export const deleteGroup = mutation({
 		const identity = await ctx.auth.getUserIdentity()
 
 		if (!identity) {
-			throw new Error("Unauthorized")
+			throw new Error("Sin autorización")
 		}
 
 		const currentUser = await getUserByClerkId({
@@ -129,12 +129,12 @@ export const deleteGroup = mutation({
 		})
 
 		if (!currentUser) {
-			throw new ConvexError("User not found")
+			throw new ConvexError("No se encontró el usuario")
 		}
 
 		const conversation = await ctx.db.get(args.conversationId)
 		if (!conversation) {
-			throw new ConvexError("Conversation not found")
+			throw new ConvexError("No se encontró la conversación")
 		}
 
 		const memberShips = await ctx.db
@@ -142,7 +142,7 @@ export const deleteGroup = mutation({
 			.withIndex("by_conversationId", q => q.eq("conversationId", args.conversationId))
 			.collect()
 		if (!memberShips || memberShips.length <= 1) {
-			throw new ConvexError("This conversation does not have any members")
+			throw new ConvexError("Esta conversación no tiene miembros")
 		}
 
 		const messages = await ctx.db
@@ -170,7 +170,7 @@ export const leaveGroup = mutation({
 		const identity = await ctx.auth.getUserIdentity()
 
 		if (!identity) {
-			throw new Error("Unauthorized")
+			throw new Error("Sin autorización")
 		}
 
 		const currentUser = await getUserByClerkId({
@@ -179,12 +179,12 @@ export const leaveGroup = mutation({
 		})
 
 		if (!currentUser) {
-			throw new ConvexError("User not found")
+			throw new ConvexError("Usuario no encontrado")
 		}
 
 		const conversation = await ctx.db.get(args.conversationId)
 		if (!conversation) {
-			throw new ConvexError("Conversation not found")
+			throw new ConvexError("No se encontró la conversación")
 		}
 
 		const memberShip = await ctx.db
@@ -193,7 +193,7 @@ export const leaveGroup = mutation({
 			.unique()
 
 		if (!memberShip) {
-			throw new ConvexError("You are not member of this group")
+			throw new ConvexError("No eres miembro de este grupo")
 		}
 
 		await ctx.db.delete(memberShip._id)
@@ -209,7 +209,7 @@ export const markRead = mutation({
 		const identity = await ctx.auth.getUserIdentity()
 
 		if (!identity) {
-			throw new Error("Unauthorized")
+			throw new Error("Sin autorización")
 		}
 
 		const currentUser = await getUserByClerkId({
@@ -218,7 +218,7 @@ export const markRead = mutation({
 		})
 
 		if (!currentUser) {
-			throw new ConvexError("User not found")
+			throw new ConvexError("No se encontró el usuario")
 		}
 
 		const memberShip = await ctx.db
@@ -227,7 +227,7 @@ export const markRead = mutation({
 			.unique()
 
 		if (!memberShip) {
-			throw new ConvexError("You are not member of this group")
+			throw new ConvexError("No eres miembro de este grupo")
 		}
 
 		const lastMessage = await ctx.db.get(args.messageId)

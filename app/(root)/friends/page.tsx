@@ -14,9 +14,9 @@ const FriendsPage = () => {
 
 	return (
 		<>
-			<ItemList title='Friends' action={<AddFriendDialog />}>
+			<ItemList title='Amigos' action={<AddFriendDialog />}>
 				{
-					requests ? requests.length === 0 ? <p className='w-full h-full flex items-center justify-center'>No friend requests found</p> : requests.map(request => {
+					requests ? requests.length === 0 ? <p className='w-full h-full flex items-center justify-center'>No hay solicitudes de amistad</p> : requests.map(request => {
 						return <Request
 							key={request.request._id}
 							id={request.request._id}

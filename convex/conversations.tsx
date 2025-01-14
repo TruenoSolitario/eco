@@ -63,7 +63,7 @@ export const get = query({
 					.filter(q => q.neq(q.field("senderId"), currentUser._id))
 					.collect()
 
-				if (conversation.isGroup) {
+				if (conversation?.isGroup) {
 					return { conversation, lastMessage, unseenCount: unseenMessages.length }
 				} else {
 					const otherMembership = allConversationMemberships
